@@ -31,7 +31,6 @@ import {
   ResponsiveContainer,
   AreaChart,
 } from "recharts";
-import { describe } from "node:test";
 
 // ========== Types ==========
 interface User {
