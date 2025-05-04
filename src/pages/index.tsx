@@ -1802,6 +1802,9 @@ const App = () => {
   useEffect(() => {
     localStorage.setItem("userHabits", JSON.stringify(habits));
   }, [habits]);
+  useEffect(() => {
+    localStorage.setItem("basicHabits", JSON.stringify(basicHabits));
+  }, [basicHabits]);
 
   if (!user)
     return (
