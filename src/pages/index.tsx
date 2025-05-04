@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ReactNode,  } from "react";
+import React, { useState, useEffect, ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   Edit2,
@@ -20,6 +20,7 @@ import {
   Clock,
   ArrowRight,
   Droplets,
+  Moon,
 } from "lucide-react";
 import {
   XAxis,
@@ -30,6 +31,7 @@ import {
   ResponsiveContainer,
   AreaChart,
 } from "recharts";
+import { describe } from "node:test";
 
 // ========== Types ==========
 interface User {
@@ -51,12 +53,7 @@ interface ProgressData {
 
 // ========== Navbar ==========
 
-
-const Navbar = ({
-  onSettings,
-}: {
-  onSettings: () => void;
-}) => {
+const Navbar = ({ onSettings }: { onSettings: () => void }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -66,14 +63,11 @@ const Navbar = ({
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-
   const textColor = "dark:text-gray-300 text-gray-700";
   const hoverTextColor = "dark:hover:text-blue-400 hover:text-blue-600";
   const bgColor = isScrolled
-    ? 
-       "dark:bg-gray-900/95 bg-white/95"
-    : 
-    "dark:bg-gray-900 bg-white";
+    ? "dark:bg-gray-900/95 bg-white/95"
+    : "dark:bg-gray-900 bg-white";
   const shadow = isScrolled ? "shadow-md backdrop-blur-sm" : "";
 
   const menuItems = [
@@ -182,7 +176,6 @@ const Navbar = ({
             </motion.button>
           ))}
           <div className="border-t my-2 border-gray-200 dark:border-gray-700"></div>
-        
         </motion.div>
       )}
     </motion.nav>
@@ -294,17 +287,15 @@ const Modal = ({
             exit="exit"
           >
             {/* Header */}
-            
 
             {/* Content */}
             <div className="px-6 py-4 max-h-[70vh] overflow-y-auto">
-            {showCloseButton && (
-              <div className="flex items-center justify-between px-6 pt-4">
-                <p className="text-lg font-semibold text-gray-800 dark:text-white">
-                  {""}
-                </p>
+              {showCloseButton && (
+                <div className="flex items-center justify-between px-6 pt-4">
+                  <p className="text-lg font-semibold text-gray-800 dark:text-white">
+                    {""}
+                  </p>
 
-                
                   <motion.button
                     whileHover={{ scale: 1.1, rotate: 90 }}
                     whileTap={{ scale: 0.9 }}
@@ -313,9 +304,8 @@ const Modal = ({
                   >
                     <X size={20} />
                   </motion.button>
-              
-              </div>
-            )}
+                </div>
+              )}
               {children}
             </div>
           </motion.div>
@@ -678,7 +668,6 @@ const Signup = () => {
               <Key size={18} className="text-gray-400" />
             </div>
             <motion.input
-           
               whileFocus="focus"
               whileTap="tap"
               variants={inputVariants}
@@ -784,6 +773,11 @@ const LandingPage = () => {
       icon: <Droplets size={24} className="text-blue-500" />,
       title: "Water Intake",
       description: "Stay hydrated by tracking your daily water consumption",
+    },
+    {
+      icon: <Moon size={24} className="text-indigo-500" />,
+      title: "Sleep Quality",
+      description: "Monitor your sleep patterns for better rest",
     },
     {
       icon: <Clock size={24} className="text-purple-500" />,
@@ -936,14 +930,12 @@ const LandingPage = () => {
                         <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
                           {features[i]?.title || "Habit"}
                         </span>
-                        <span className="text-blue-500 font-bold">
-                          {value}
-                        </span>
+                        <span className="text-blue-500 font-bold">{value}</span>
                       </div>
                       <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
                         <motion.div
                           initial={{ width: 0 }}
-                          animate={{ width: `${value*10}%` }}
+                          animate={{ width: `${value * 10}%` }}
                           transition={{ delay: 0.7 + i * 0.1, duration: 0.8 }}
                           className="bg-blue-500 rounded-full h-2"
                         ></motion.div>
@@ -951,7 +943,6 @@ const LandingPage = () => {
                     </motion.div>
                   ))}
                 </div>
-               
               </div>
             </div>
           </motion.div>
@@ -1022,7 +1013,7 @@ const LandingPage = () => {
             >
               Start Building Better Habits Today
             </motion.h2>
-           
+
             <motion.button
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -1055,11 +1046,11 @@ const ProgressGraph = ({
 }) => {
   const gridColor = isDarkMode ? "#444" : "#ccc";
   const xAxisColor = isDarkMode ? "#ddd" : "#333";
-  const localData = data.map(d => ({
-    date: d.date.slice(0, 3), 
-    progress: d.progress
+  const localData = data.map((d) => ({
+    date: d.date.slice(0, 3),
+    progress: d.progress,
   }));
-  
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -1136,17 +1127,19 @@ const HabitCard = ({
   habit: Habit;
   setHabits: React.Dispatch<React.SetStateAction<Habit[]>>;
   basic?: boolean;
-  isDarkMode:boolean;
+  isDarkMode: boolean;
 }) => {
   const [isGraphOpen, setGraphOpen] = useState<boolean>(false);
-  const[isDeleting,setIsDeleting] = useState<boolean>(false)
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editedName, setEditedName] = useState<string>(habit.name);
   const [editedMinGoal, setEditedMinGoal] = useState<number>(habit.goal[0]);
   const [editedMaxGoal, setEditedMaxGoal] = useState<number>(habit.goal[1]);
 
-  const graphData = localStorage.getItem(`habit-${habit.name}`)
-  const [data, setData] = useState<ProgressData[]>(JSON.parse(graphData?graphData:'[]'));
+  const graphData = localStorage.getItem(`habit-${habit.name}`);
+  const [data, setData] = useState<ProgressData[]>(
+    JSON.parse(graphData ? graphData : "[]")
+  );
   const progressData = [
     { date: "Mon May 01 2025", progress: 5 },
     { date: "Tue May 02 2025", progress: 7 },
@@ -1156,7 +1149,7 @@ const HabitCard = ({
     { date: "Sat May 06 2025", progress: 9 },
     { date: "Sun May 07 2025", progress: 7 },
   ];
-  
+
   const today = new Date();
   const setProgress = (progress: number) => {
     const name = habit.name;
@@ -1174,8 +1167,8 @@ const HabitCard = ({
         return [...prevData, { date: todayStr, progress: progress }];
       }
     });
-// setData([...data,{date:today.toDateString(),progress}])
-// console.log(data);
+    // setData([...data,{date:today.toDateString(),progress}])
+    // console.log(data);
     localStorage.setItem(`habit-${habit.name}`, JSON.stringify(data));
     setHabits((prevHabits) =>
       prevHabits.map((habit) =>
@@ -1185,9 +1178,9 @@ const HabitCard = ({
   };
 
   const deleteHabit = () => {
-const name = habit.name
+    const name = habit.name;
     setHabits((prev) => prev.filter((habit) => habit.name !== name));
-    localStorage.removeItem(`habit-${habit.name}`)
+    localStorage.removeItem(`habit-${habit.name}`);
   };
 
   const saveEdits = () => {
@@ -1221,54 +1214,59 @@ const name = habit.name
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.3 }}
-    >{<Modal showCloseButton
-                isOpen = {isDeleting}
-                onClose={()=>setIsDeleting(false)}
-                
-                >
-                  <div className="text-center">
-        <motion.div
-          initial={{ y: -10, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.1 }}
+    >
+      {
+        <Modal
+          showCloseButton
+          isOpen={isDeleting}
+          onClose={() => setIsDeleting(false)}
         >
-          <h2 className="text-xl font-semibold text-gray-800 mb-3">Confirm Deletion?</h2>
-        </motion.div>
-        
-        <motion.div
-          initial={{ y: -10, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.2 }}
-        >
-          <p className="text-gray-600 mb-6">
-            Are you sure you want to delete this habit?
-            <br />
-            <span className="text-red-500 font-medium">Note: Your progress will be lost.</span>
-          </p>
-        </motion.div>
-        
-        <div className="flex justify-center space-x-4">
-          <motion.button
-            
-            className="px-5 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg transition-colors"
-            onClick={() => setIsDeleting(false)}
-          >
-            Cancel
-          </motion.button>
-          
-          <motion.button
-            
-            className="px-5 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors"
-            onClick={() => {
-              deleteHabit()
-              setIsDeleting(false);
-            }}
-          >
-            Delete
-          </motion.button>
-        </div>
-      </div>
-                  </Modal>}
+          <div className="text-center">
+            <motion.div
+              initial={{ y: -10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.1 }}
+            >
+              <h2 className="text-xl font-semibold text-gray-800 mb-3">
+                Confirm Deletion?
+              </h2>
+            </motion.div>
+
+            <motion.div
+              initial={{ y: -10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.2 }}
+            >
+              <p className="text-gray-600 mb-6">
+                Are you sure you want to delete this habit?
+                <br />
+                <span className="text-red-500 font-medium">
+                  Note: Your progress will be lost.
+                </span>
+              </p>
+            </motion.div>
+
+            <div className="flex justify-center space-x-4">
+              <motion.button
+                className="px-5 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg transition-colors"
+                onClick={() => setIsDeleting(false)}
+              >
+                Cancel
+              </motion.button>
+
+              <motion.button
+                className="px-5 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors"
+                onClick={() => {
+                  deleteHabit();
+                  setIsDeleting(false);
+                }}
+              >
+                Delete
+              </motion.button>
+            </div>
+          </div>
+        </Modal>
+      }
       <motion.div
         className={`bg-gradient-to-r bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100 p-6 shadow-lg rounded-xl w-full `}
         whileHover={{
@@ -1303,7 +1301,9 @@ const name = habit.name
               </div>
             </div>
 
-            <div className={`flex justify-between mb-2 text-sm text-gray-600 dark:text-gray-400`}>
+            <div
+              className={`flex justify-between mb-2 text-sm text-gray-600 dark:text-gray-400`}
+            >
               <p>
                 Goal: <span className="font-medium">{habit.goal[0]}</span> -{" "}
                 <span className="font-medium">{habit.goal[1]}</span>
@@ -1431,7 +1431,7 @@ const name = habit.name
       <AnimatePresence>
         {isGraphOpen && (
           <ProgressGraph
-            data={data.length>=7?data:progressData}
+            data={data.length >= 7 ? data : progressData}
             setGraphOpen={setGraphOpen}
             isDarkMode={isDarkMode}
           />
@@ -1695,13 +1695,14 @@ const AddHabit = ({
 
 // ========== Footer ==========
 const Footer = () => {
-
   return (
     <footer className={`dark:bg-gray-800 bg-gray-100 py-8 mt-6`}>
       <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
         <div className="flex items-center space-x-2 mb-4 md:mb-0">
-          <BarChart2 size={24} className='dark:text-blue-400 text-blue-600' />
-          <span className={`text-lg font-bold dark:text-white text-gray-900`}>HabitTracker</span>
+          <BarChart2 size={24} className="dark:text-blue-400 text-blue-600" />
+          <span className={`text-lg font-bold dark:text-white text-gray-900`}>
+            HabitTracker
+          </span>
         </div>
         <div className={`text-sm dark:text-gray-300 text-gray-600`}>
           © {new Date().getFullYear()} HabitTracker. All rights reserved.
@@ -1710,7 +1711,6 @@ const Footer = () => {
     </footer>
   );
 };
-
 
 // ========== Main App ==========
 
@@ -1722,26 +1722,25 @@ const App = () => {
 
   const date = new Date();
 
+  const usePrefersDark = () => {
+    const getPrefersDark = () =>
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
 
-const usePrefersDark = () => {
-  const getPrefersDark = () =>
-    typeof window !== "undefined" &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const [prefersDark, setPrefersDark] = useState(getPrefersDark);
 
-  const [prefersDark, setPrefersDark] = useState(getPrefersDark);
+    useEffect(() => {
+      if (typeof window === "undefined") return;
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
+      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+      const handleChange = () => setPrefersDark(mediaQuery.matches);
 
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    const handleChange = () => setPrefersDark(mediaQuery.matches);
+      mediaQuery.addEventListener("change", handleChange);
+      return () => mediaQuery.removeEventListener("change", handleChange);
+    }, []);
 
-    mediaQuery.addEventListener("change", handleChange);
-    return () => mediaQuery.removeEventListener("change", handleChange);
-  }, []);
-
-  return prefersDark;
-};
+    return prefersDark;
+  };
 
   const isDarkMode = usePrefersDark();
 
@@ -1809,13 +1808,13 @@ const usePrefersDark = () => {
     return (
       <>
         <LandingPage />
-        <Footer  />
+        <Footer />
       </>
     );
-  const bgColor = 'dark:bg-indigo-950 bg-indigo-400';
-  const bbgColorFrom = 'dark:from-gray-900 from-blue-50';
-  const bbgColorTo = 'dark:to-gray-800 to-indigo-50';
-  const textColor = 'dark:text-gray-200 text-gray-800';
+  const bgColor = "dark:bg-indigo-950 bg-indigo-400";
+  const bbgColorFrom = "dark:from-gray-900 from-blue-50";
+  const bbgColorTo = "dark:to-gray-800 to-indigo-50";
+  const textColor = "dark:text-gray-200 text-gray-800";
 
   return (
     <div
@@ -1836,9 +1835,7 @@ const usePrefersDark = () => {
           <Settings user={user} setUser={setUser} />
         </Modal>
         <div className="flex justify-between items-center mb-12">
-          <Navbar
-            onSettings={() => setSettingsOpen(true)}
-          />
+          <Navbar onSettings={() => setSettingsOpen(true)} />
         </div>
 
         <motion.div
@@ -1854,9 +1851,7 @@ const usePrefersDark = () => {
             >
               Welcome back, {user?.name || "User"}
             </h2>
-            <span
-              className={`font-bold dark:text-indigo-600 text-indigo-800`}
-            >
+            <span className={`font-bold dark:text-indigo-600 text-indigo-800`}>
               {date.toDateString()}
             </span>
           </div>
@@ -1894,19 +1889,18 @@ const usePrefersDark = () => {
             Your Habits
           </h2>
           <div className="gap-2 grid sm:grid-cols-1 lg:grid-cols-3">
-            {habits.map((habit, i) => (<>
-              <HabitCard
-                key={i}
-                habit={habit}
-                setHabits={setHabits}
-                isDarkMode={isDarkMode}
-              /> </>
+            {habits.map((habit, i) => (
+              <>
+                <HabitCard
+                  key={i}
+                  habit={habit}
+                  setHabits={setHabits}
+                  isDarkMode={isDarkMode}
+                />{" "}
+              </>
             ))}
 
-            <AddHabit
-              habits={habits}
-              setHabits={setHabits}
-            />
+            <AddHabit habits={habits} setHabits={setHabits} />
           </div>
         </motion.div>
       </motion.div>
