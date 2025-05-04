@@ -1033,7 +1033,7 @@ const LandingPage = () => {
               onClick={() => setSignupOpen(true)}
               className="px-8 py-3 bg-white text-blue-600 hover:bg-blue-50 rounded-lg font-medium shadow-lg"
             >
-              Get Started — It's Free
+              {`Get Started — It's Free`}
             </motion.button>
           </div>
         </section>
