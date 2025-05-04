@@ -1758,7 +1758,7 @@ const usePrefersDark = () => {
       .sort((a, b) => b.getTime() - a.getTime());
 
     let streak = 0;
-    let today = new Date();
+    const today = new Date();
     today.setHours(0, 0, 0, 0);
 
     for (let i = 0; i < dates.length; i++) {
